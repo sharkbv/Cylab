@@ -1,0 +1,2 @@
+[console_scripts]
+cylab = cylab.cli:main

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cylab"
+version = "0.1.0"
+description = "Cyber AI Laboratory - Unified platform for managing an AI-powered cybersecurity lab"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+
+[project.scripts]
+cylab = "cylab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
