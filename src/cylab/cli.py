@@ -4,6 +4,7 @@ from cylab.version import __version__
 from cylab.core.logger import get_logger
 from cylab.commands import doctor
 from cylab.commands import config as config_cmd
+from cylab.commands import install as install_cmd
 
 
 def main():
@@ -29,6 +30,9 @@ def main():
     set_parser.add_argument("key")
     set_parser.add_argument("value")
 
+    install_parser = subparsers.add_parser("install", help="Install a required tool")
+    install_parser.add_argument("target", nargs="?", default=None, help="Tool to install (docker, ollama, node)")
+
     args = parser.parse_args()
 
     logger = get_logger()
@@ -38,6 +42,8 @@ def main():
         doctor.run(args)
     elif args.command == "config":
         config_cmd.run(args)
+    elif args.command == "install":
+        install_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
