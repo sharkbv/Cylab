@@ -5,6 +5,7 @@ from cylab.core.logger import get_logger
 from cylab.commands import doctor
 from cylab.commands import config as config_cmd
 from cylab.commands import install as install_cmd
+from cylab.commands import profile as profile_cmd
 
 
 def main():
@@ -33,6 +34,19 @@ def main():
     install_parser = subparsers.add_parser("install", help="Install a required tool")
     install_parser.add_argument("target", nargs="?", default=None, help="Tool to install (docker, ollama, node)")
 
+    profile_parser = subparsers.add_parser("profile", help="Manage CYLAB profiles")
+    profile_sub = profile_parser.add_subparsers(dest="profile_action")
+
+    profile_sub.add_parser("list", help="List all profiles")
+    profile_sub.add_parser("show", help="Show the active profile")
+
+    create_p = profile_sub.add_parser("create", help="Create a new profile")
+    create_p.add_argument("name")
+    create_p.add_argument("--description", default="", help="Optional profile description")
+
+    use_p = profile_sub.add_parser("use", help="Switch to a profile")
+    use_p.add_argument("name")
+
     args = parser.parse_args()
 
     logger = get_logger()
@@ -44,6 +58,8 @@ def main():
         config_cmd.run(args)
     elif args.command == "install":
         install_cmd.run(args)
+    elif args.command == "profile":
+        profile_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
