@@ -1,4 +1,5 @@
 import argparse
+import sys
 
 from cylab.version import __version__
 from cylab.core.logger import get_logger
@@ -9,7 +10,7 @@ from cylab.commands import profile as profile_cmd
 from cylab.commands import report as report_cmd
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser(prog="cylab", description="Cyber AI Laboratory")
     parser.add_argument("--version", action="version", version=f"CYLAB {__version__}")
 
@@ -42,11 +43,10 @@ def main():
     report_sub.add_parser("generate", help="Generate a new report")
     report_sub.add_parser("list", help="List saved reports")
 
-    args = parser.parse_args()
+    return parser
 
-    logger = get_logger()
-    logger.info("CYLAB started")
 
+def dispatch(args, logger):
     if args.command == "doctor":
         doctor.run(args)
     elif args.command == "config":
@@ -60,6 +60,33 @@ def main():
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
+
+
+def main():
+    parser = build_parser()
+    args = parser.parse_args()
+
+    logger = get_logger()
+    logger.info("CYLAB started")
+
+    try:
+        dispatch(args, logger)
+    except KeyboardInterrupt:
+        print("\nCancelled by user.")
+        sys.exit(130)
+    except FileNotFoundError as e:
+        logger.error(f"File not found: {e}")
+        print(f"Error: required file not found ({e.filename}).")
+        sys.exit(1)
+    except PermissionError as e:
+        logger.error(f"Permission denied: {e}")
+        print("Error: permission denied. Try running with appropriate privileges.")
+        sys.exit(1)
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        print(f"Error: {e}")
+        print("Run with --help for usage, or check ~/.cylab/logs/cylab.log for details.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
