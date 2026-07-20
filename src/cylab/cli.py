@@ -8,6 +8,7 @@ from cylab.commands import config as config_cmd
 from cylab.commands import install as install_cmd
 from cylab.commands import profile as profile_cmd
 from cylab.commands import report as report_cmd
+from cylab.commands import models as models_cmd
 
 
 def build_parser():
@@ -43,6 +44,14 @@ def build_parser():
     report_sub.add_parser("generate", help="Generate a new report")
     report_sub.add_parser("list", help="List saved reports")
 
+    models_parser = subparsers.add_parser("models", help="Manage AI models via Ollama")
+    models_sub = models_parser.add_subparsers(dest="models_action")
+    models_sub.add_parser("list", help="List local models")
+    pull_p = models_sub.add_parser("pull", help="Pull a model")
+    pull_p.add_argument("name", nargs="?", default=None)
+    run_p = models_sub.add_parser("run", help="Run a model interactively")
+    run_p.add_argument("name", nargs="?", default=None)
+
     return parser
 
 
@@ -57,6 +66,8 @@ def dispatch(args, logger):
         profile_cmd.run(args)
     elif args.command == "report":
         report_cmd.run(args)
+    elif args.command == "models":
+        models_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
