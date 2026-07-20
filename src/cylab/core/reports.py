@@ -30,3 +30,12 @@ def list_reports():
     if not REPORTS_DIR.exists():
         return []
     return sorted(REPORTS_DIR.glob("report_*.json"))
+
+
+def load_latest_report():
+    import json
+    reports = list_reports()
+    if not reports:
+        return {}
+    with open(reports[-1]) as f:
+        return json.load(f)

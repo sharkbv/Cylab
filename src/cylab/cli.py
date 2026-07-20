@@ -9,6 +9,7 @@ from cylab.commands import install as install_cmd
 from cylab.commands import profile as profile_cmd
 from cylab.commands import report as report_cmd
 from cylab.commands import models as models_cmd
+from cylab.commands import agent as agent_cmd
 
 
 def build_parser():
@@ -52,6 +53,11 @@ def build_parser():
     run_p = models_sub.add_parser("run", help="Run a model interactively")
     run_p.add_argument("name", nargs="?", default=None)
 
+    agent_parser = subparsers.add_parser("agent", help="AI-powered analysis")
+    agent_sub = agent_parser.add_subparsers(dest="agent_action")
+    analyze_p = agent_sub.add_parser("analyze", help="Analyze latest report with AI")
+    analyze_p.add_argument("--model", default=None)
+
     return parser
 
 
@@ -68,6 +74,8 @@ def dispatch(args, logger):
         report_cmd.run(args)
     elif args.command == "models":
         models_cmd.run(args)
+    elif args.command == "agent":
+        agent_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
