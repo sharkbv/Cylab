@@ -10,6 +10,7 @@ from cylab.commands import profile as profile_cmd
 from cylab.commands import report as report_cmd
 from cylab.commands import models as models_cmd
 from cylab.commands import agent as agent_cmd
+from cylab.commands import plugin as plugin_cmd
 
 
 def build_parser():
@@ -58,6 +59,12 @@ def build_parser():
     analyze_p = agent_sub.add_parser("analyze", help="Analyze latest report with AI")
     analyze_p.add_argument("--model", default=None)
 
+    plugin_parser = subparsers.add_parser("plugin", help="Manage and run plugins")
+    plugin_sub = plugin_parser.add_subparsers(dest="plugin_action")
+    plugin_sub.add_parser("list", help="List available plugins")
+    plugin_run_p = plugin_sub.add_parser("run", help="Run a plugin")
+    plugin_run_p.add_argument("name", nargs="?", default=None)
+
     return parser
 
 
@@ -76,6 +83,8 @@ def dispatch(args, logger):
         models_cmd.run(args)
     elif args.command == "agent":
         agent_cmd.run(args)
+    elif args.command == "plugin":
+        plugin_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
@@ -87,7 +96,6 @@ def main():
 
     logger = get_logger()
     logger.info("CYLAB started")
-
     try:
         dispatch(args, logger)
     except KeyboardInterrupt:
