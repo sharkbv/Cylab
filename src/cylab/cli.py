@@ -11,6 +11,7 @@ from cylab.commands import report as report_cmd
 from cylab.commands import models as models_cmd
 from cylab.commands import agent as agent_cmd
 from cylab.commands import plugin as plugin_cmd
+from cylab.commands import mcp as mcp_cmd
 
 
 def build_parser():
@@ -65,6 +66,16 @@ def build_parser():
     plugin_run_p = plugin_sub.add_parser("run", help="Run a plugin")
     plugin_run_p.add_argument("name", nargs="?", default=None)
 
+    mcp_parser = subparsers.add_parser("mcp", help="Manage MCP servers")
+    mcp_sub = mcp_parser.add_subparsers(dest="mcp_action")
+    mcp_sub.add_parser("list", help="List configured MCP servers")
+    mcp_add_p = mcp_sub.add_parser("add", help="Add an MCP server")
+    mcp_add_p.add_argument("name", nargs="?", default=None)
+    mcp_add_p.add_argument("mcp_command", nargs="?", default=None)
+    mcp_add_p.add_argument("mcp_args", nargs="*", default=[])
+    mcp_remove_p = mcp_sub.add_parser("remove", help="Remove an MCP server")
+    mcp_remove_p.add_argument("name", nargs="?", default=None)
+
     return parser
 
 
@@ -85,6 +96,8 @@ def dispatch(args, logger):
         agent_cmd.run(args)
     elif args.command == "plugin":
         plugin_cmd.run(args)
+    elif args.command == "mcp":
+        mcp_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
@@ -96,6 +109,7 @@ def main():
 
     logger = get_logger()
     logger.info("CYLAB started")
+
     try:
         dispatch(args, logger)
     except KeyboardInterrupt:
