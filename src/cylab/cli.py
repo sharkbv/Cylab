@@ -12,6 +12,7 @@ from cylab.commands import models as models_cmd
 from cylab.commands import agent as agent_cmd
 from cylab.commands import plugin as plugin_cmd
 from cylab.commands import mcp as mcp_cmd
+from cylab.commands import scan as scan_cmd
 
 
 def build_parser():
@@ -76,6 +77,10 @@ def build_parser():
     mcp_remove_p = mcp_sub.add_parser("remove", help="Remove an MCP server")
     mcp_remove_p.add_argument("name", nargs="?", default=None)
 
+    scan_parser = subparsers.add_parser("scan", help="Run an Nmap scan")
+    scan_parser.add_argument("target", nargs="?", default=None)
+    scan_parser.add_argument("--profile", default=None, choices=["quick", "full"])
+
     return parser
 
 
@@ -98,6 +103,8 @@ def dispatch(args, logger):
         plugin_cmd.run(args)
     elif args.command == "mcp":
         mcp_cmd.run(args)
+    elif args.command == "scan":
+        scan_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")

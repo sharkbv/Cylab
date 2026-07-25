@@ -21,6 +21,13 @@ INSTALLERS = {
             ["bash", "-c", "curl -fsSL https://ollama.com/install.sh | sh"],
         ],
     },
+    "nmap": {
+        "check": lambda: shutil.which("nmap") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "nmap"],
+        ],
+    },
     "node": {
         "check": lambda: shutil.which("node") is not None,
         "commands": [
