@@ -13,6 +13,7 @@ from cylab.commands import agent as agent_cmd
 from cylab.commands import plugin as plugin_cmd
 from cylab.commands import mcp as mcp_cmd
 from cylab.commands import scan as scan_cmd
+from cylab.commands import webscan as webscan_cmd
 
 
 def build_parser():
@@ -81,6 +82,10 @@ def build_parser():
     scan_parser.add_argument("target", nargs="?", default=None)
     scan_parser.add_argument("--profile", default=None, choices=["quick", "full"])
 
+    webscan_parser = subparsers.add_parser("webscan", help="Run Nikto/Gobuster against a web target")
+    webscan_parser.add_argument("target", nargs="?", default=None)
+    webscan_parser.add_argument("--tool", default=None, choices=["nikto", "gobuster", "both"])
+
     return parser
 
 
@@ -105,6 +110,8 @@ def dispatch(args, logger):
         mcp_cmd.run(args)
     elif args.command == "scan":
         scan_cmd.run(args)
+    elif args.command == "webscan":
+        webscan_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")

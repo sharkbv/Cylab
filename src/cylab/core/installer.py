@@ -28,6 +28,20 @@ INSTALLERS = {
             ["sudo", "apt", "install", "-y", "nmap"],
         ],
     },
+    "nikto": {
+        "check": lambda: shutil.which("nikto") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "nikto"],
+        ],
+    },
+    "gobuster": {
+        "check": lambda: shutil.which("gobuster") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "gobuster"],
+        ],
+    },
     "node": {
         "check": lambda: shutil.which("node") is not None,
         "commands": [
