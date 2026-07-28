@@ -8,6 +8,7 @@ from cylab.core.webscan import (
     run_nikto,
     run_gobuster,
 )
+from cylab.core.advisor import save_scan_output
 
 
 def run(args):
@@ -29,6 +30,7 @@ def run(args):
             elif output is None:
                 print("Nikto scan failed.")
             else:
+                save_scan_output("nikto", output)
                 print(output)
 
     if tool in ("gobuster", "both"):
@@ -43,4 +45,5 @@ def run(args):
             elif output is None:
                 print("Gobuster scan failed.")
             else:
+                save_scan_output("gobuster", output)
                 print(output)

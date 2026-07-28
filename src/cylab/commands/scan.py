@@ -3,6 +3,7 @@ CYLAB Scan Command
 """
 
 from cylab.core.scanner import nmap_available, run_scan
+from cylab.core.advisor import save_scan_output
 
 
 def run(args):
@@ -29,4 +30,5 @@ def run(args):
         print("Scan failed. Check the target and your permissions.")
         return
 
+    save_scan_output("nmap", output)
     print(output)

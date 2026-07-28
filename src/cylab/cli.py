@@ -61,6 +61,8 @@ def build_parser():
     agent_sub = agent_parser.add_subparsers(dest="agent_action")
     analyze_p = agent_sub.add_parser("analyze", help="Analyze latest report with AI")
     analyze_p.add_argument("--model", default=None)
+    advise_p = agent_sub.add_parser("advise", help="Suggest next steps based on scan results")
+    advise_p.add_argument("--model", default=None)
 
     plugin_parser = subparsers.add_parser("plugin", help="Manage and run plugins")
     plugin_sub = plugin_parser.add_subparsers(dest="plugin_action")
