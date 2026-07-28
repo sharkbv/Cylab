@@ -42,6 +42,13 @@ INSTALLERS = {
             ["sudo", "apt", "install", "-y", "gobuster"],
         ],
     },
+    "searchsploit": {
+        "check": lambda: shutil.which("searchsploit") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "exploitdb"],
+        ],
+    },
     "node": {
         "check": lambda: shutil.which("node") is not None,
         "commands": [

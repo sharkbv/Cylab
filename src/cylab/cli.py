@@ -14,6 +14,7 @@ from cylab.commands import plugin as plugin_cmd
 from cylab.commands import mcp as mcp_cmd
 from cylab.commands import scan as scan_cmd
 from cylab.commands import webscan as webscan_cmd
+from cylab.commands import exploit as exploit_cmd
 
 
 def build_parser():
@@ -88,6 +89,11 @@ def build_parser():
     webscan_parser.add_argument("target", nargs="?", default=None)
     webscan_parser.add_argument("--tool", default=None, choices=["nikto", "gobuster", "both"])
 
+    exploit_parser = subparsers.add_parser("exploit", help="Search known exploits")
+    exploit_sub = exploit_parser.add_subparsers(dest="exploit_action")
+    search_p = exploit_sub.add_parser("search", help="Search Exploit-DB")
+    search_p.add_argument("query", nargs="?", default=None)
+
     return parser
 
 
@@ -114,6 +120,9 @@ def dispatch(args, logger):
         scan_cmd.run(args)
     elif args.command == "webscan":
         webscan_cmd.run(args)
+    elif args.command == "exploit":
+        args.query = getattr(args, "query", None)
+        exploit_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
