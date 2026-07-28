@@ -15,6 +15,7 @@ from cylab.commands import mcp as mcp_cmd
 from cylab.commands import scan as scan_cmd
 from cylab.commands import webscan as webscan_cmd
 from cylab.commands import exploit as exploit_cmd
+from cylab.commands import msf as msf_cmd
 
 
 def build_parser():
@@ -94,6 +95,11 @@ def build_parser():
     search_p = exploit_sub.add_parser("search", help="Search Exploit-DB")
     search_p.add_argument("query", nargs="?", default=None)
 
+    msf_parser = subparsers.add_parser("msf", help="Search Metasploit modules")
+    msf_sub = msf_parser.add_subparsers(dest="msf_action")
+    msf_search_p = msf_sub.add_parser("search", help="Search Metasploit modules")
+    msf_search_p.add_argument("query", nargs="?", default=None)
+
     return parser
 
 
@@ -123,6 +129,9 @@ def dispatch(args, logger):
     elif args.command == "exploit":
         args.query = getattr(args, "query", None)
         exploit_cmd.run(args)
+    elif args.command == "msf":
+        args.query = getattr(args, "query", None)
+        msf_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")

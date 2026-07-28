@@ -49,6 +49,13 @@ INSTALLERS = {
             ["sudo", "apt", "install", "-y", "exploitdb"],
         ],
     },
+    "metasploit": {
+        "check": lambda: shutil.which("msfconsole") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "metasploit-framework"],
+        ],
+    },
     "node": {
         "check": lambda: shutil.which("node") is not None,
         "commands": [
