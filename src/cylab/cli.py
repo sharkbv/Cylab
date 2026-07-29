@@ -17,6 +17,7 @@ from cylab.commands import webscan as webscan_cmd
 from cylab.commands import exploit as exploit_cmd
 from cylab.commands import msf as msf_cmd
 from cylab.commands import sqlmap as sqlmap_cmd
+from cylab.commands import pwaudit as pwaudit_cmd
 
 
 def build_parser():
@@ -104,6 +105,18 @@ def build_parser():
     sqlmap_parser = subparsers.add_parser("sqlmap", help="Run SQLMap against a target")
     sqlmap_parser.add_argument("target", nargs="?", default=None)
 
+    pwaudit_parser = subparsers.add_parser("pwaudit", help="Password auditing (Hydra/John)")
+    pwaudit_sub = pwaudit_parser.add_subparsers(dest="pwaudit_action")
+
+    hydra_p = pwaudit_sub.add_parser("hydra", help="Run Hydra brute-force")
+    hydra_p.add_argument("target", nargs="?", default=None)
+    hydra_p.add_argument("--service", default=None)
+    hydra_p.add_argument("--userlist", default=None)
+    hydra_p.add_argument("--passlist", default=None)
+
+    john_p = pwaudit_sub.add_parser("john", help="Run John the Ripper")
+    john_p.add_argument("hashfile", nargs="?", default=None)
+
     return parser
 
 
@@ -138,6 +151,8 @@ def dispatch(args, logger):
         msf_cmd.run(args)
     elif args.command == "sqlmap":
         sqlmap_cmd.run(args)
+    elif args.command == "pwaudit":
+        pwaudit_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")

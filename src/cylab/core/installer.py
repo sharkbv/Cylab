@@ -63,6 +63,20 @@ INSTALLERS = {
             ["sudo", "apt", "install", "-y", "sqlmap"],
         ],
     },
+    "hydra": {
+        "check": lambda: shutil.which("hydra") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "hydra"],
+        ],
+    },
+    "john": {
+        "check": lambda: shutil.which("john") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "john"],
+        ],
+    },
     "node": {
         "check": lambda: shutil.which("node") is not None,
         "commands": [
