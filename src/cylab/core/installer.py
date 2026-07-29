@@ -56,6 +56,13 @@ INSTALLERS = {
             ["sudo", "apt", "install", "-y", "metasploit-framework"],
         ],
     },
+    "sqlmap": {
+        "check": lambda: shutil.which("sqlmap") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "sqlmap"],
+        ],
+    },
     "node": {
         "check": lambda: shutil.which("node") is not None,
         "commands": [
