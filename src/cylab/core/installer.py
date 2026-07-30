@@ -77,6 +77,26 @@ INSTALLERS = {
             ["sudo", "apt", "install", "-y", "john"],
         ],
     },
+    "trivy": {
+        "check": lambda: shutil.which("trivy") is not None,
+        "commands": [
+            ["bash", "-c", "curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin"],
+        ],
+    },
+    "theharvester": {
+        "check": lambda: shutil.which("theHarvester") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "theharvester"],
+        ],
+    },
+    "spiderfoot": {
+        "check": lambda: shutil.which("sf.py") is not None or shutil.which("spiderfoot") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "spiderfoot"],
+        ],
+    },
     "node": {
         "check": lambda: shutil.which("node") is not None,
         "commands": [

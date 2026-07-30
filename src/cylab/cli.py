@@ -18,6 +18,8 @@ from cylab.commands import exploit as exploit_cmd
 from cylab.commands import msf as msf_cmd
 from cylab.commands import sqlmap as sqlmap_cmd
 from cylab.commands import pwaudit as pwaudit_cmd
+from cylab.commands import trivy as trivy_cmd
+from cylab.commands import osint as osint_cmd
 
 
 def build_parser():
@@ -117,6 +119,13 @@ def build_parser():
     john_p = pwaudit_sub.add_parser("john", help="Run John the Ripper")
     john_p.add_argument("hashfile", nargs="?", default=None)
 
+    trivy_parser = subparsers.add_parser("trivy", help="Scan a Docker image for vulnerabilities")
+    trivy_parser.add_argument("image", nargs="?", default=None)
+
+    osint_parser = subparsers.add_parser("osint", help="Gather OSINT info (theHarvester/SpiderFoot)")
+    osint_parser.add_argument("domain", nargs="?", default=None)
+    osint_parser.add_argument("--tool", default=None, choices=["harvester", "spiderfoot", "both"])
+
     return parser
 
 
@@ -153,6 +162,10 @@ def dispatch(args, logger):
         sqlmap_cmd.run(args)
     elif args.command == "pwaudit":
         pwaudit_cmd.run(args)
+    elif args.command == "trivy":
+        trivy_cmd.run(args)
+    elif args.command == "osint":
+        osint_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
