@@ -15,11 +15,11 @@ def spiderfoot_available():
     return shutil.which("sf.py") is not None or shutil.which("spiderfoot") is not None
 
 
-def run_theharvester(domain, source="all", timeout=180):
+def run_theharvester(domain, source="all", timeout=600):
     if not theharvester_available():
         return None
 
-    cmd = ["theHarvester", "-d", domain, "-b", source]
+    cmd = ["theHarvester", "-d", domain, "-l", "0", "-b", source]
 
     try:
         result = subprocess.run(

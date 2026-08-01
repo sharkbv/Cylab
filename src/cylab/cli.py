@@ -20,6 +20,7 @@ from cylab.commands import sqlmap as sqlmap_cmd
 from cylab.commands import pwaudit as pwaudit_cmd
 from cylab.commands import trivy as trivy_cmd
 from cylab.commands import osint as osint_cmd
+from cylab.commands import fuzz as fuzz_cmd
 
 
 def build_parser():
@@ -126,6 +127,9 @@ def build_parser():
     osint_parser.add_argument("domain", nargs="?", default=None)
     osint_parser.add_argument("--tool", default=None, choices=["harvester", "spiderfoot", "both"])
 
+    fuzz_parser = subparsers.add_parser("fuzz", help="Fuzz a web target with ffuf")
+    fuzz_parser.add_argument("target", nargs="?", default=None)
+
     return parser
 
 
@@ -166,6 +170,8 @@ def dispatch(args, logger):
         trivy_cmd.run(args)
     elif args.command == "osint":
         osint_cmd.run(args)
+    elif args.command == "fuzz":
+        fuzz_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
