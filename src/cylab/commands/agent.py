@@ -40,13 +40,28 @@ def run(args):
             print("Run: cylab install ollama")
             return
 
-        prompt = build_advisor_prompt()
-        if prompt is None:
-            print("No scan results found. Run 'cylab scan' or 'cylab webscan' first.")
+        from cylab.core.scanstore import build_target_summary, get_last_target
+        
+        # تحديد الهدف (سواء تم تمريره أو جلب آخر هدف مفحوص)
+        target = getattr(args, 'target', None)
+        if not target:
+            target = get_last_target()
+            
+        if not target:
+            print("No target specified and no recent scan found. Run 'cylab scan <target>' or 'cylab assess <target>' first.")
             return
 
+        print(f"[*] Building aggressive exploitation summary for target: {target}")
+        summary = build_target_summary(target)
+        
+        if not summary or "No scan results found" in str(summary):
+            print(f"No scan results found for target '{target}'.")
+            return
+
+        prompt = build_assessment_prompt(summary)
         model = args.model or "llama3.2"
-        print(f"Asking {model} to suggest next steps based on scan results...")
+        
+        print(f"Asking {model} to generate the Red-Team exploitation and analysis report...")
         print("This may take a minute or two.\n")
 
         answer = ask_model(model, prompt)

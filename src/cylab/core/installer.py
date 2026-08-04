@@ -104,6 +104,13 @@ INSTALLERS = {
             ["sudo", "apt", "install", "-y", "ffuf"],
         ],
     },
+    "nuclei": {
+        "check": lambda: shutil.which("nuclei") is not None,
+        "commands": [
+            ["sudo", "apt", "update"],
+            ["sudo", "apt", "install", "-y", "nuclei"],
+        ],
+    },
     "node": {
         "check": lambda: shutil.which("node") is not None,
         "commands": [

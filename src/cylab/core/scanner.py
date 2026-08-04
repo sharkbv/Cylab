@@ -7,7 +7,7 @@ import shutil
 import subprocess
 
 SCAN_PROFILES = {
-    "quick": ["-T4", "-F"],
+    "quick": ["-T4", "-F", "-sV"],
     "full": ["-T4", "-A", "-p-"],
 }
 

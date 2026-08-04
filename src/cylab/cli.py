@@ -20,7 +20,9 @@ from cylab.commands import sqlmap as sqlmap_cmd
 from cylab.commands import pwaudit as pwaudit_cmd
 from cylab.commands import trivy as trivy_cmd
 from cylab.commands import osint as osint_cmd
+from cylab.commands import assess as assess_cmd
 from cylab.commands import fuzz as fuzz_cmd
+from cylab.commands import nuclei as nuclei_cmd
 
 
 def build_parser():
@@ -130,6 +132,13 @@ def build_parser():
     fuzz_parser = subparsers.add_parser("fuzz", help="Fuzz a web target with ffuf")
     fuzz_parser.add_argument("target", nargs="?", default=None)
 
+    nuclei_parser = subparsers.add_parser("nuclei", help="Run Nuclei template-based scanning")
+    nuclei_parser.add_argument("target", nargs="?", default=None)
+
+    assess_parser = subparsers.add_parser("assess", help="Full pipeline: scan + webscan + exploit lookup")
+    assess_parser.add_argument("target", nargs="?", default=None)
+    assess_parser.add_argument("--web-url", dest="web_url", default=None)
+
     return parser
 
 
@@ -172,6 +181,10 @@ def dispatch(args, logger):
         osint_cmd.run(args)
     elif args.command == "fuzz":
         fuzz_cmd.run(args)
+    elif args.command == "nuclei":
+        nuclei_cmd.run(args)
+    elif args.command == "assess":
+        assess_cmd.run(args)
     else:
         print("Welcome to CYLAB")
         print("Run 'cylab --help' to see available commands")
